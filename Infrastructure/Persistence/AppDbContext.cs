@@ -8,7 +8,8 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
 
-    public DbSet<Example> Examples { set; get; }
+    public DbSet<User> Users { set; get; }
+    public DbSet<RefreshToken> RefreshTokens { set; get; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

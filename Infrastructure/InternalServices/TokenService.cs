@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Application.IServices.IInternal;
 using Application.Settings;
@@ -53,11 +54,14 @@ public class TokenService : ITokenService
 
     public string GenerateRandomToken()
     {
-        throw new NotImplementedException();
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
     }
 
     public string GenerateRefreshToken()
     {
-        throw new NotImplementedException();
+        var randomNumber = new byte[64];
+        using var rn = RandomNumberGenerator.Create();
+        rn.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }

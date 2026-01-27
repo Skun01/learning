@@ -24,6 +24,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddOptionSettingsExtension(builder.Configuration);
 builder.Services.AddSwaggerExtension();
 var app = builder.Build();
 

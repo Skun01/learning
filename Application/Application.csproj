@@ -19,6 +19,7 @@
     <Folder Include="IServices\IInternal\" />
     <Folder Include="Mappings\" />
     <Folder Include="Common\" />
+    <Folder Include="Services\" />
     <Folder Include="Settings\" />
   </ItemGroup>
 

@@ -29,7 +29,7 @@ public class Repository<T> : IRepository<T> where T : class
         return await dbSet.AsNoTracking().ToListAsync();
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public async Task<T?> GetByIdAsync(string id)
     {
         return await dbSet.FindAsync(id);
     }

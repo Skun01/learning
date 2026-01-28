@@ -25,11 +25,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddOptionSettingsExtension(builder.Configuration);
+builder.Services.AddAuthConfigurationExtension(builder.Configuration);
 builder.Services.AddSwaggerExtension();
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

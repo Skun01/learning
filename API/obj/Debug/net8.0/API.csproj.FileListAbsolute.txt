@@ -263,3 +263,4 @@ D:\Dotnet\Project\Learning\API\obj\Debug\net8.0\API.xml
 D:\Dotnet\Project\Learning\API\obj\Debug\net8.0\API.pdb
 D:\Dotnet\Project\Learning\API\obj\Debug\net8.0\API.genruntimeconfig.cache
 D:\Dotnet\Project\Learning\API\obj\Debug\net8.0\ref\API.dll
+D:\Dotnet\Project\Learning\API\obj\Debug\net8.0\API.sourcelink.json

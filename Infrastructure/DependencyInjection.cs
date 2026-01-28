@@ -1,4 +1,8 @@
 ﻿using Application.IRepositories;
+using Application.IServices;
+using Application.IServices.IInternal;
+using Application.Services;
+using Infrastructure.InternalServices;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +22,10 @@ public static class DependencyInjection
 
         // Unit of work
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        // Services;
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ITokenService, TokenService>();
         
         return services;
     }

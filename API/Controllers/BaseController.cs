@@ -29,7 +29,7 @@ public class BaseController : ControllerBase
         catch (Exception ex)
         {
             Log.Logger.Error($"Failed: {ex.Message}\n{ex.StackTrace}");
-            return ApiResponse<T>.FailResponse(MessageConstant.CommonMessage.INTERNAL_SERVER_ERROR, 500);
+            return ApiResponse<T>.FailResponse(MessageConstants.CommonMessage.INTERNAL_SERVER_ERROR, 500);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Infrastructure.Persistence;
+﻿using Application.IRepositories;
+using Infrastructure.Persistence;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,9 @@ public static class DependencyInjection
         {
             options.UseSqlServer(connectionString);
         });
+
+        // Unit of work
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         return services;
     }

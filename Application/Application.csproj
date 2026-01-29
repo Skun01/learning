@@ -15,8 +15,6 @@
     <Folder Include="DTOs\Auth\" />
     <Folder Include="Helpers\" />
     <Folder Include="IRepositories\" />
-    <Folder Include="IServices\" />
-    <Folder Include="IServices\IInternal\" />
     <Folder Include="Mappings\" />
     <Folder Include="Common\" />
     <Folder Include="Services\" />

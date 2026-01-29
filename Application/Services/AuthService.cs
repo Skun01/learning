@@ -14,11 +14,16 @@ public class AuthService : IAuthService
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITokenService _tokenService;
     private readonly JwtSettings _jwtSettings;
-    public AuthService(IUnitOfWork unitOfWork, ITokenService tokenService, IOptions<JwtSettings> settings)
+    private readonly IEmailSenderService _emailService;
+    private readonly IEmailTemplateService _emailTemplate;
+    public AuthService(IUnitOfWork unitOfWork, ITokenService tokenService, IOptions<JwtSettings> jwtSettings,
+        IEmailSenderService emailService, IEmailTemplateService emailTemplate)
     {
         _unitOfWork = unitOfWork;
         _tokenService = tokenService;
-        _jwtSettings = settings.Value;
+        _jwtSettings = jwtSettings.Value;
+        _emailService = emailService;
+        _emailTemplate = emailTemplate;
     }
 
     public async Task<AuthDTO> LoginAsync(LoginRequest request)
@@ -121,13 +126,48 @@ public class AuthService : IAuthService
         return true;
     }
 
-    public Task<bool> ResetPasswordAsync(ResetPasswordRequest request)
+    public async Task<bool> ResetPasswordAsync(ResetPasswordRequest request)
     {
-        throw new NotImplementedException();
+        var user = await _unitOfWork.Users.GetByPasswordResetTokenAsync(request.Token);
+
+        if(user == null)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
+
+        if(user.PasswordResetTokenExpiry < DateTime.UtcNow)
+            throw new ApplicationException(MessageConstants.AuthMessage.TOKEN_EXPIRED);
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        user.PasswordResetToken = null;
+        user.PasswordResetTokenExpiry = null;
+
+        _unitOfWork.Users.UpdateAsync(user);
+        await _unitOfWork.SaveChangesAsync();
+
+        return true;
     }
 
-    public Task<bool> SendResetPasswordEmailAsync(string email)
+    public async Task<bool> SendResetPasswordEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        var user = await _unitOfWork.Users.GetByEmailAsync(email);
+
+        if(user != null)
+        {
+            user.PasswordResetToken = _tokenService.GenerateRandomToken();
+            user.PasswordResetTokenExpiry = DateTime.UtcNow.AddMinutes(_jwtSettings.ResetPasswordTokenExpireMinutes);
+            
+            _unitOfWork.Users.UpdateAsync(user);
+            await _unitOfWork.SaveChangesAsync();
+            
+            string emailTemplate = _emailTemplate.GetPasswordResetTemplate(user.Username, user.PasswordResetToken, 
+                _jwtSettings.ResetPasswordTokenExpireMinutes);
+
+            await _emailService.SendEmailAsync(
+                user.Email,
+                EmailSubjectConstants.RESET_PASSWORD,
+                emailTemplate
+            );
+        }
+
+        return true;
     }
 }

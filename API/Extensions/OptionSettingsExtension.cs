@@ -11,6 +11,16 @@ public static class OptionSettingsExtension
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
+        services.AddOptions<EmailSettings>()
+            .Bind(configuration.GetSection(EmailSettings.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddOptions<AppSettings>()
+            .Bind(configuration.GetSection(AppSettings.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
         return services;
     }
 }

@@ -8,4 +8,5 @@ public class JwtSettings
     public string Audience { get; init; } = string.Empty;
     public int ExpireHours { get; init; } = 5;
     public int RefreshTokenExpireDays { get; init; }
+    public int ResetPasswordTokenExpireMinutes { get; init; }
 }

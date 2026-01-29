@@ -14,5 +14,6 @@ public static class MessageConstants
     {
         public const string INVALID_LOGIN = "Invalid_400";
         public const string EMAIL_EXIST = "Email_Exist_409";
+        public const string TOKEN_EXPIRED = "Token_Expried_409";
     }
 }

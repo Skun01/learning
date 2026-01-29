@@ -3,9 +3,7 @@ using Application.Common;
 using Application.DTOs.Auth;
 using Application.IServices;
 using Domain.Constants;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace API.Controllers;
 
@@ -42,6 +40,18 @@ public class AuthController : BaseController
     {
         var refreshToken = Request.Cookies[CookieConstants.RefreshToken];
         var result = await HandleException(_authService.RefreshTokenAsync(refreshToken));
+        if(result.Data != null)
+            Response.SetRefreshTokenCookieExtension(result.Data.RefreshToken);
+
+        return result;
+    }
+
+    [HttpPost("logout")]
+    public async Task<ApiResponse<bool>> Logout()
+    {
+        var refreshToken = Request.Cookies[CookieConstants.RefreshToken];
+        var result = await HandleException(_authService.LogoutAsync(refreshToken));
+        Response.DeleteRefreshTokenCookieExtension();
 
         return result;
     }

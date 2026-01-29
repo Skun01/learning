@@ -16,4 +16,9 @@ public static class HttpExtensions
 
         response.Cookies.Append(CookieConstants.RefreshToken, refreshToken, cookieOptions);
     }
+
+    public static void DeleteRefreshTokenCookieExtension(this HttpResponse response)
+    {
+        response.Cookies.Delete(CookieConstants.RefreshToken);
+    }
 }

@@ -48,22 +48,57 @@ public class AuthService : IAuthService
         };
     }
 
+    public async Task<bool> LogoutAsync(string? refreshToken)
+    {
+        if(refreshToken == null)
+            throw new ApplicationException(MessageConstants.CommonMessage.INVALID);
+            
+        var userRefreshToken = await _unitOfWork.RefreshTokens.GetByTokenAsync(refreshToken);
+        if(userRefreshToken != null)
+        {
+            userRefreshToken.Revoked = true;
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        return true;
+    }
+
     public async Task<AuthDTO> RefreshTokenAsync(string? refreshToken)
     {
         if(refreshToken == null)
-            throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
+            throw new ApplicationException(MessageConstants.CommonMessage.INVALID);
             
-        var userRefreshToken = await _unitOfWork.RefreshTokens.GetByTokenAsync(refreshToken);
-        if(userRefreshToken == null || userRefreshToken.ExpiresAt < DateTime.UtcNow)
+        var storedToken = await _unitOfWork.RefreshTokens.GetByTokenAsync(refreshToken);
+        if(storedToken == null || storedToken.Revoked)
             throw new UnauthorizedAccessException(MessageConstants.CommonMessage.UNAUTHORIZED);
+        
+        if(storedToken.ExpiresAt < DateTime.UtcNow)
+            throw new UnauthorizedAccessException(MessageConstants.AuthMessage.TOKEN_EXPIRED);
 
-        var user = await _unitOfWork.Users.GetByIdAsync(userRefreshToken.UserId);
+        var user = await _unitOfWork.Users.GetByIdAsync(storedToken.UserId);
         if(user == null)
             throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
 
+        storedToken.Revoked = true;
+    
+        // tạo token mới
+        var newAccessToken = _tokenService.GenerateAccessToken(user);
+        var newRefreshToken = new RefreshToken
+        {
+            Id = Guid.NewGuid().ToString(),
+            UserId = user.Id,
+            Token = _tokenService.GenerateRefreshToken(),
+            ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpireDays),
+            Revoked = false
+        };
+
+        await _unitOfWork.RefreshTokens.AddAsync(newRefreshToken);
+        await _unitOfWork.SaveChangesAsync();
+
         return new AuthDTO()
         {
-            AccessToken = _tokenService.GenerateAccessToken(user!)
+            AccessToken = newAccessToken,
+            RefreshToken = newRefreshToken.Token
         };
     }
 

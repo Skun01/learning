@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using API.Extensions;
 using Infrastructure;
 using Serilog;
@@ -22,7 +23,12 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // cho phép convert enum sang string và ngược lại
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddOptionSettingsExtension(builder.Configuration);
 builder.Services.AddAuthConfigurationExtension(builder.Configuration);
@@ -43,7 +49,6 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty;
     });    
 }
-app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();

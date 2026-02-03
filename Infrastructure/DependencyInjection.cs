@@ -25,6 +25,9 @@ public static class DependencyInjection
 
         // Services;
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IDeckService, DeckService>();
+
+        // Internal services
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IEmailSenderService, EmailSenderService>();
         services.AddScoped<IEmailTemplateService, EmailTemplateService>();

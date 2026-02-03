@@ -17,6 +17,11 @@ public class AuthController : BaseController
         _authService = authService;
     }
 
+    /// <summary>
+    /// Đăng ký 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost("register")]
     public async Task<ApiResponse<bool>> Register([FromBody] RegisterRequest request)
     {
@@ -25,6 +30,11 @@ public class AuthController : BaseController
         return result;
     }
 
+    /// <summary>
+    /// Đăng nhập
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost("login")]
     public async Task<ApiResponse<AuthDTO>> Login([FromBody] LoginRequest request)
     {
@@ -35,6 +45,11 @@ public class AuthController : BaseController
         return result;
     }
 
+
+    /// <summary>
+    /// Lấy token mới khi token cũ hết hạn
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("refresh-token")]
     public async Task<ApiResponse<AuthDTO>> RefreshToken()
     {
@@ -46,6 +61,10 @@ public class AuthController : BaseController
         return result;
     }
 
+    /// <summary>
+    /// Đăng xuất
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("logout")]
     public async Task<ApiResponse<bool>> Logout()
     {
@@ -56,6 +75,11 @@ public class AuthController : BaseController
         return result;
     }
 
+    /// <summary>
+    /// Gửi mail yêu cầu reset password
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
     [HttpPost("forgot-password")]
     public async Task<ApiResponse<bool>> SendResetEmail([FromBody] string email)
     {
@@ -64,6 +88,11 @@ public class AuthController : BaseController
         return result;
     }
 
+    /// <summary>
+    /// Xử lý yêu cầu reset password
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost("reset-password")]
     public async Task<ApiResponse<bool>> ResetPassword([FromBody] ResetPasswordRequest request)
     {

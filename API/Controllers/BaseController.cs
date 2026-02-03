@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Application.Common;
 using Domain.Constants;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 

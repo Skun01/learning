@@ -8,4 +8,6 @@ public class User : BaseEntity
     public bool IsVerified { set; get; }
     public string? PasswordResetToken { set; get; }
     public DateTime? PasswordResetTokenExpiry { set; get; }
+
+    public virtual ICollection<Deck> Decks { set; get; } = [];
 }

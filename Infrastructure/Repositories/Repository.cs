@@ -19,7 +19,7 @@ public class Repository<T> : IRepository<T> where T : class
         await dbSet.AddAsync(entity);
     }
 
-    public void DeleteAsync(T entity)
+    public void Delete(T entity)
     {
         dbSet.Remove(entity);
     }

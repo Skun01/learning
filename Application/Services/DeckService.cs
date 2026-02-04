@@ -31,6 +31,19 @@ public class DeckService : IDeckService
         return true;
     }
 
+    public async Task<bool> DeleteDeckAsync(string id, string userId)
+    {
+        var deck = await _unitOfWork.Decks.GetByIdAsync(id);
+        
+        if(deck == null)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
+
+        _unitOfWork.Decks.Delete(deck);
+        await _unitOfWork.SaveChangesAsync();
+
+        return true;
+    }
+
     public async Task<bool> UpdateDeckAsync(UpdateDeckRequest request, string userId, string deckId)
     {
         var deck = await _unitOfWork.Decks.GetByIdAsync(deckId);

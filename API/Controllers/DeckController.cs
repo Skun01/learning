@@ -46,4 +46,12 @@ public class DeckController : BaseController
 
         return result;
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ApiResponse<bool>> Delete([FromRoute] string id)
+    {
+        var result = await HandleException(_service.DeleteDeckAsync(id, GetCurrentUserId()));
+
+        return result;
+    }
 }

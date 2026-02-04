@@ -7,7 +7,8 @@ public static class MessageConstants
         public const string INTERNAL_SERVER_ERROR = "Common_505";   // Lỗi Server
         public const string NOT_FOUND = "Common_404"; // không tìm thấy
         public const string INVALID = "Common_400"; // không hợp lệ
-        public const string UNAUTHORIZED = "Common_401"; // không được quyền
+        public const string UNAUTHORIZED = "Common_401"; // không cho có authorize
+        public const string NOT_ALLOW = "Common_405"; // không được quyền
     }
 
     public static class AuthMessage

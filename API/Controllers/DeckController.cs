@@ -48,6 +48,11 @@ public class DeckController : BaseController
         return result;
     }
 
+    /// <summary>
+    /// xóa deck
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     public async Task<ApiResponse<bool>> Delete([FromRoute] string id)
     {

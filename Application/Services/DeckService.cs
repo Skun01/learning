@@ -41,6 +41,9 @@ public class DeckService : IDeckService
         if(deck == null)
             throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
 
+        if(deck.CreatedBy != userId)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_ALLOW);
+
         _unitOfWork.Decks.Delete(deck);
         await _unitOfWork.SaveChangesAsync();
 
@@ -81,7 +84,7 @@ public class DeckService : IDeckService
             throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
 
         if(deck.CreatedBy != userId)
-            throw new UnauthorizedAccessException(MessageConstants.CommonMessage.UNAUTHORIZED);
+            throw new UnauthorizedAccessException(MessageConstants.CommonMessage.NOT_ALLOW);
 
         deck.Name = request.Name;
         deck.Description = request.Description;

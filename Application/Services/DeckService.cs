@@ -1,8 +1,11 @@
 using Application.DTOs.Deck;
+using Application.DTOs.User;
 using Application.IRepositories;
 using Application.IServices;
+using Application.Mappings;
 using Domain.Constants;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.Services;
 
@@ -42,6 +45,32 @@ public class DeckService : IDeckService
         await _unitOfWork.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<DeckDTO> GetDeckSummaryContent(string id)
+    {
+        var deck = await _unitOfWork.Decks.GetWithCardByIdAsync(id);
+        
+        if(deck == null)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
+        
+        var response = new DeckDTO
+        {
+            Id = deck.Id,
+            Name = deck.Name,
+            Description = deck.Description,
+            Type = deck.Type,
+            Author = new UserDTO
+            {
+                Id = deck.User!.Id,
+                Username = deck.User.Username
+            },
+            Cards = deck.Type == DeckType.Vocabulary
+                ? deck.VocabularyCards.Select(c => c.ToPreviewDTO()).ToList()
+                : deck.GrammarCards.Select(c => c.ToPreviewDTO()).ToList()
+        };
+
+        return response;
     }
 
     public async Task<bool> UpdateDeckAsync(UpdateDeckRequest request, string userId, string deckId)

@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using Application.Common;
 using Application.DTOs.Deck;
 using Application.IServices;
@@ -51,6 +52,19 @@ public class DeckController : BaseController
     public async Task<ApiResponse<bool>> Delete([FromRoute] string id)
     {
         var result = await HandleException(_service.DeleteDeckAsync(id, GetCurrentUserId()));
+
+        return result;
+    }
+
+    /// <summary>
+    /// Lấy tổng quan nội dung của các thẻ trong deck
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ApiResponse<DeckDTO>> GetDeckInfo(string id)
+    {
+        var result = await HandleException(_service.GetDeckSummaryContent(id));
 
         return result;
     }

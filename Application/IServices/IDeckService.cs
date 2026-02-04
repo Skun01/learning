@@ -7,4 +7,5 @@ public interface IDeckService
     Task<bool> CreateDeckAsync(CreateDeckRequest request, string userId);
     Task<bool> UpdateDeckAsync(UpdateDeckRequest request, string userId, string deckId);
     Task<bool> DeleteDeckAsync(string id, string userId);
+    Task<DeckDTO> GetDeckSummaryContent(string id);
 }

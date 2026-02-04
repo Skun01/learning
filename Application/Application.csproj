@@ -12,9 +12,9 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Auth\" />
+    <Folder Include="DTOs\User\" />
     <Folder Include="Helpers\" />
     <Folder Include="IRepositories\" />
-    <Folder Include="Mappings\" />
     <Folder Include="Common\" />
     <Folder Include="Services\" />
     <Folder Include="Settings\" />

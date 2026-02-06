@@ -52,6 +52,16 @@ public class VocabularyCardService : IVocabularyCardService
         return true;
     }
 
+    public async Task<VocabularyCardDTO> GetCardByIdAsync(string id)
+    {
+        var card = await _unitOfWork.VocabularyCards.GetFullInfoByIdAsync(id);
+
+        if(card == null)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
+
+        return card.ToDTO();
+    }
+
     public async Task<IEnumerable<VocabularyCardDTO>> GetVocabularyListByDeckId(string deckId)
     {
         var isDeckExist = await _unitOfWork.Decks.IsExist(deckId, DeckType.Vocabulary);

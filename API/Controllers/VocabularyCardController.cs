@@ -37,9 +37,22 @@ public class VocabularyCardController : BaseController
     /// <param name="deckId"></param>
     /// <returns></returns>
     [HttpGet("deck/{deckId}")]
-    public async Task<ApiResponse<IEnumerable<VocabularyCardDTO>>> GetCardByDeckId([FromRoute] string deckId)
+    public async Task<ApiResponse<IEnumerable<VocabularyCardDTO>>> GetCardListByDeckId([FromRoute] string deckId)
     {
         var result = await HandleException(_service.GetVocabularyListByDeckId(deckId));
+
+        return result;
+    }
+
+    /// <summary>
+    /// Lấy chi tiết một card theo id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ApiResponse<VocabularyCardDTO>> GetCardById([FromRoute] string id)
+    {
+        var result = await HandleException(_service.GetCardByIdAsync(id));
 
         return result;
     }

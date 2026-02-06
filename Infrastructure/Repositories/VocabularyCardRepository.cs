@@ -16,4 +16,11 @@ public class VocabularyCardRepository : Repository<VocabularyCard>, IVocabularyC
             .Include(d => d.ExampleSentences)
             .ToListAsync();
     }
+
+    public async Task<VocabularyCard?> GetFullInfoByIdAsync(string id)
+    {
+        return await _context.VocabularyCards.AsNoTracking()
+            .Include(c => c.ExampleSentences)
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
 }

@@ -52,6 +52,22 @@ public class VocabularyCardService : IVocabularyCardService
         return true;
     }
 
+    public async Task<bool> DeleteCardByIdAsync(string id, string userId)
+    {
+        var card = await _unitOfWork.VocabularyCards.GetFullInfoByIdAsync(id);
+
+        if(card == null)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
+
+        if(card.Deck!.CreatedBy != userId)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_ALLOW);
+
+        _unitOfWork.VocabularyCards.Delete(card);
+        await _unitOfWork.SaveChangesAsync();
+
+        return true;
+    }
+
     public async Task<VocabularyCardDTO> GetCardByIdAsync(string id)
     {
         var card = await _unitOfWork.VocabularyCards.GetFullInfoByIdAsync(id);

@@ -71,4 +71,17 @@ public class VocabularyCardController : BaseController
 
         return result;
     }
+
+    /// <summary>
+    /// Xoó card từ vựng theo id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpDelete("{id}")]
+    public async Task<ApiResponse<bool>> Delete([FromRoute] string id)
+    {
+        var result = await HandleException(_service.DeleteCardByIdAsync(id, GetCurrentUserId()));
+
+        return result;
+    }
 }

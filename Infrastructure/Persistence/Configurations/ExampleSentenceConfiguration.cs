@@ -18,11 +18,11 @@ public class ExampleSentenceConfiguration : IEntityTypeConfiguration<ExampleSent
         builder.HasOne(e => e.VocabularyCard)
                .WithMany(v => v.ExampleSentences)
                .HasForeignKey(e => e.VocabularyCardId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.ClientCascade);
 
         builder.HasOne(e => e.GrammarCard)
                .WithMany(g => g.ExampleSentences)
                .HasForeignKey(e => e.GrammarCardId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.ClientCascade);
     }
 }

@@ -1,3 +1,4 @@
+using Application.DTOs.Common;
 using Application.DTOs.Deck;
 using Application.DTOs.User;
 using Application.IRepositories;
@@ -74,6 +75,13 @@ public class DeckService : IDeckService
         };
 
         return response;
+    }
+
+    public async Task<IEnumerable<DeckSummaryDTO>> GetMyDeckByFilterAsync(QueryDTO<SearchDeckQueryDTO> query, string userId)
+    {
+        var decks = await _unitOfWork.Decks.GetByFilterAsync(query, userId);
+
+        return decks.Select(d => d.ToSummaryDTO());
     }
 
     public async Task<bool> UpdateDeckAsync(UpdateDeckRequest request, string userId, string deckId)

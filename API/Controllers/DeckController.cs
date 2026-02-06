@@ -1,5 +1,6 @@
 using System.Reflection.Metadata;
 using Application.Common;
+using Application.DTOs.Common;
 using Application.DTOs.Deck;
 using Application.IServices;
 using Microsoft.AspNetCore.Authorization;
@@ -70,6 +71,30 @@ public class DeckController : BaseController
     public async Task<ApiResponse<DeckDTO>> GetDeckInfo(string id)
     {
         var result = await HandleException(_service.GetDeckSummaryContent(id));
+
+        return result;
+    }
+
+    /// <summary>
+    /// tìm kiếm deck của người dùng
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public async Task<ApiResponse<IEnumerable<DeckSummaryDTO>>> Search([FromQuery] SearchDeckQueryDTO query)
+    {
+        var model = new QueryDTO<SearchDeckQueryDTO>
+        {
+            Query = query
+        };
+        var result = await HandleException(_service.GetMyDeckByFilterAsync(model, GetCurrentUserId()));
+
+        result.MetaData = new MetaData()
+        {
+            Total = model.Total,
+            PageSize = query.PageSize,
+            Page = query.Page
+        };
 
         return result;
     }

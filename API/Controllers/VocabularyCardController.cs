@@ -58,6 +58,12 @@ public class VocabularyCardController : BaseController
         return result;
     }
 
+    /// <summary>
+    /// Cập nhật card từ vựng theo id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
     public async Task<ApiResponse<bool>> Update([FromRoute] string id, [FromBody] UpdateVocabularyCardRequest request)
     {

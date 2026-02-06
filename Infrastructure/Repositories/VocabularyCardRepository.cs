@@ -19,8 +19,9 @@ public class VocabularyCardRepository : Repository<VocabularyCard>, IVocabularyC
 
     public async Task<VocabularyCard?> GetFullInfoByIdAsync(string id)
     {
-        return await _context.VocabularyCards.AsNoTracking()
+        return await _context.VocabularyCards
             .Include(c => c.ExampleSentences)
+            .Include(c => c.Deck)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 }

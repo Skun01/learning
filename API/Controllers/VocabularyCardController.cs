@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Application.Common;
 using Application.DTOs.VocabularyCard;
@@ -53,6 +54,14 @@ public class VocabularyCardController : BaseController
     public async Task<ApiResponse<VocabularyCardDTO>> GetCardById([FromRoute] string id)
     {
         var result = await HandleException(_service.GetCardByIdAsync(id));
+
+        return result;
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ApiResponse<bool>> Update([FromRoute] string id, [FromBody] UpdateVocabularyCardRequest request)
+    {
+        var result = await HandleException(_service.UpdateCardAsync(request, id, GetCurrentUserId()));
 
         return result;
     }

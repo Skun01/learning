@@ -73,4 +73,22 @@ public class VocabularyCardService : IVocabularyCardService
 
         return cards.Select(c => c.ToDTO()).ToList();
     }
+
+    public async Task<bool> UpdateCardAsync(UpdateVocabularyCardRequest request, string cardId, string userId)
+    {
+        var card = await _unitOfWork.VocabularyCards.GetFullInfoByIdAsync(cardId);
+
+        if(card == null)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
+
+        if(card.Deck!.CreatedBy != userId)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_ALLOW);
+
+        card.Term = request.Term;
+        card.Meaning = request.Meaning;
+
+        await _unitOfWork.SaveChangesAsync();
+        
+        return true;
+    }
 }

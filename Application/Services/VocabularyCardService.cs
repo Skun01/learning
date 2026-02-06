@@ -1,6 +1,7 @@
 using Application.DTOs.VocabularyCard;
 using Application.IRepositories;
 using Application.IServices;
+using Application.Mappings;
 using Domain.Constants;
 using Domain.Entities;
 using Domain.Enums;
@@ -49,5 +50,17 @@ public class VocabularyCardService : IVocabularyCardService
         await _unitOfWork.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<IEnumerable<VocabularyCardDTO>> GetVocabularyListByDeckId(string deckId)
+    {
+        var isDeckExist = await _unitOfWork.Decks.IsExist(deckId, DeckType.Vocabulary);
+
+        if(!isDeckExist)
+            throw new ApplicationException(MessageConstants.CommonMessage.NOT_FOUND);
+
+        var cards = await _unitOfWork.VocabularyCards.GetAllByDeckId(deckId);
+
+        return cards.Select(c => c.ToDTO()).ToList();
     }
 }

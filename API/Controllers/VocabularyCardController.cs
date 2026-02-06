@@ -30,4 +30,17 @@ public class VocabularyCardController : BaseController
 
         return result;
     }
+
+    /// <summary>
+    /// Lấy danh sách các card của một deck vocabulary
+    /// </summary>
+    /// <param name="deckId"></param>
+    /// <returns></returns>
+    [HttpGet("deck/{deckId}")]
+    public async Task<ApiResponse<IEnumerable<VocabularyCardDTO>>> GetCardByDeckId([FromRoute] string deckId)
+    {
+        var result = await HandleException(_service.GetVocabularyListByDeckId(deckId));
+
+        return result;
+    }
 }

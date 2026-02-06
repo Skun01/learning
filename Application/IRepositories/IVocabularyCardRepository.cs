@@ -4,5 +4,5 @@ namespace Application.IRepositories;
 
 public interface IVocabularyCardRepository : IRepository<VocabularyCard>
 {
-
+    public Task<IEnumerable<VocabularyCard>> GetAllByDeckId(string deckId);
 }

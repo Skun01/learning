@@ -26,6 +26,7 @@ public static class DependencyInjection
         // Services;
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IDeckService, DeckService>();
+        services.AddScoped<IVocabularyCardService, VocabularyCardService>();
 
         // Internal services
         services.AddScoped<ITokenService, TokenService>();

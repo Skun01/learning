@@ -13,10 +13,10 @@
   <ItemGroup>
     <Folder Include="DTOs\Auth\" />
     <Folder Include="DTOs\User\" />
+    <Folder Include="DTOs\VocabularyCard\" />
     <Folder Include="Helpers\" />
     <Folder Include="IRepositories\" />
     <Folder Include="Common\" />
-    <Folder Include="Services\" />
     <Folder Include="Settings\" />
   </ItemGroup>
 

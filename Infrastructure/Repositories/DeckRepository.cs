@@ -59,4 +59,9 @@ public class DeckRepository : Repository<Deck>, IDeckRepository
             .Include(d => d.User)
             .FirstOrDefaultAsync(d => d.Id == id);
     }
+
+    public async Task<bool> IsExist(string id, DeckType type)
+    {
+        return await _context.Decks.AnyAsync(d => d.Id == id && d.Type == type);
+    }
 }

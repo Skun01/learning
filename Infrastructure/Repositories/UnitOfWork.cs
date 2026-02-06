@@ -9,6 +9,8 @@ public class UnitOfWork : IUnitOfWork
     private IUserRepository? _users;
     private IRefreshTokenRepository? _refreshTokens;
     private IDeckRepository? _decks;
+    private IVocabularyCardRepository? _vocabularyCards;
+    private IExampleSentenceRepository? _exampleSentences;
     
     public UnitOfWork(AppDbContext context)
     {
@@ -18,7 +20,10 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository Users => _users ??= new UserRepository(_context);
     public IRefreshTokenRepository RefreshTokens => _refreshTokens ??= new RefreshTokenRepository(_context);
     public IDeckRepository Decks => _decks ??= new DeckRepository(_context);
-    
+
+    public IVocabularyCardRepository VocabularyCards => _vocabularyCards ??= new VocabularyCardRepository(_context);
+    public IExampleSentenceRepository ExampleSentences => _exampleSentences ??= new ExampleSentenceRepository(_context);
+
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();

@@ -1,5 +1,3 @@
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
 using Application.Common;
 using Application.DTOs.VocabularyCard;
 using Application.IServices;
